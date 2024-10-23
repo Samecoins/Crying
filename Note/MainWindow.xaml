@@ -1,0 +1,118 @@
+﻿<Window x:Class="Note.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" 
+        Height="450" Width="800"
+        MinHeight="450" MinWidth="800"
+        WindowStyle="SingleBorderWindow" ResizeMode="CanResize">
+
+    <!-- Команды -->
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.New" Executed="NewCommand_Executed"/>
+        <CommandBinding Command="ApplicationCommands.Open" Executed="OpenCommand_Executed"/>
+    </Window.CommandBindings>
+
+    <!-- Ресурсы окна -->
+    <Window.Resources>
+        <!-- Кисть для фона всех кнопок -->
+        <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="LightGray"/>
+
+        <!-- Стиль для кнопок -->
+        <Style x:Key="RoundButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Background" Value="{StaticResource ButtonBackgroundBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Ellipse Fill="{TemplateBinding Background}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <!-- Основное содержимое окна -->
+    <Grid>
+        <!-- Восстанавливаем градиент на фоне -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="LightBlue" Offset="0"/>
+                <GradientStop Color="LightGray" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <!-- Определение строк для размещения элементов -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Верхняя панель с выравниванием кнопок и заголовка -->
+        <Grid Grid.Row="0" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <!-- Для кнопок слева -->
+                <ColumnDefinition Width="*"/>
+                <!-- Для заголовка и строки поиска -->
+                <ColumnDefinition Width="Auto"/>
+                <!-- Для кнопки настроек справа -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Кнопка добавления слева -->
+            <Button Grid.Column="0" Style="{StaticResource RoundButtonStyle}" Command="ApplicationCommands.New" Margin="10,0,20,0">
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/add.png" Stretch="Uniform"/>
+                </Button.Background>
+            </Button>
+
+            <!-- Поле поиска с иконкой и заголовок рядом -->
+            <DockPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" LastChildFill="False">
+                <!-- Поле поиска с иконкой -->
+                <DockPanel Margin="0,0,30,0">
+                    <Image Source="Resources/search.png" Width="40" Height="40" VerticalAlignment="Center" Margin="10"/>
+                    <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="15">
+                        <TextBox Width="180" Height="30" VerticalAlignment="Center" Margin="5" Text="Search" Background="Transparent" BorderThickness="0"/>
+                    </Border>
+                </DockPanel>
+
+                <!-- Заголовок "Notes" рядом со строкой поиска -->
+                <TextBlock Text="Notes" FontSize="32" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            </DockPanel>
+
+            <!-- Кнопка настроек справа -->
+            <Button Grid.Column="2" Style="{StaticResource RoundButtonStyle}" Command="ApplicationCommands.Open" Margin="10">
+                <Button.Background>
+                    <ImageBrush ImageSource="Resources/settings.png" Stretch="Uniform"/>
+                </Button.Background>
+            </Button>
+        </Grid>
+
+        <!-- Область заметок с прокруткой -->
+        <ScrollViewer Grid.Row="1" Margin="20">
+            <WrapPanel>
+                <!-- Карточка заметки с декоратором Border -->
+                <Border Background="LightGoldenrodYellow" Width="150" Height="150" Margin="10" CornerRadius="10" Padding="10">
+                    <StackPanel>
+                        <TextBlock Text="Sample Note" FontWeight="Bold" FontSize="16" TextWrapping="Wrap"/>
+                        <TextBlock Text="May 21, 2020" FontSize="12" Foreground="Gray"/>
+                        <Button Content="✎" HorizontalAlignment="Right" Width="30" Height="30" Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Ещё одна карточка заметки -->
+                <Border Background="LightSalmon" Width="150" Height="150" Margin="10" CornerRadius="10" Padding="10">
+                    <StackPanel>
+                        <TextBlock Text="Another Note" FontWeight="Bold" FontSize="16" TextWrapping="Wrap"/>
+                        <TextBlock Text="June 5, 2020" FontSize="12" Foreground="Gray"/>
+                        <Button Content="✎" HorizontalAlignment="Right" Width="30" Height="30" Margin="0,10,0,0"/>
+                    </StackPanel>
+                </Border>
+            </WrapPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>
