@@ -9,6 +9,12 @@
         MinHeight="450" MinWidth="800"
         WindowStyle="SingleBorderWindow" ResizeMode="CanResize">
 
+    <!-- Команды -->
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.New" Executed="NewCommand_Executed"/>
+        <CommandBinding Command="ApplicationCommands.Open" Executed="OpenCommand_Executed"/>
+    </Window.CommandBindings>
+
     <!-- Ресурсы -->
     <Window.Resources>
         <!-- Кисть градиента для фона окна -->
@@ -17,7 +23,7 @@
             <GradientStop Color="LightCoral" Offset="1"/>
         </LinearGradientBrush>
 
-        <!-- Стиль для кнопок -->
+        <!-- Стиль с анимацией для кнопок -->
         <Style x:Key="StyledButton" TargetType="Button">
             <Setter Property="Width" Value="100"/>
             <Setter Property="Height" Value="40"/>
@@ -35,6 +41,35 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+
+            <!-- Триггер для анимации при наведении -->
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <!-- Анимация изменения ширины и высоты -->
+                                <DoubleAnimation Storyboard.TargetProperty="Width" To="120" Duration="0:0:0.3"/>
+                                <DoubleAnimation Storyboard.TargetProperty="Height" To="50" Duration="0:0:0.3"/>
+                                <!-- Анимация изменения цвета фона -->
+                                <ColorAnimation Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="Orange" Duration="0:0:0.3"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <!-- Возвращаем размеры обратно -->
+                                <DoubleAnimation Storyboard.TargetProperty="Width" To="100" Duration="0:0:0.3"/>
+                                <DoubleAnimation Storyboard.TargetProperty="Height" To="40" Duration="0:0:0.3"/>
+                                <!-- Возвращаем цвет фона обратно -->
+                                <ColorAnimation Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="DodgerBlue" Duration="0:0:0.3"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <!-- Стиль для заголовка -->
@@ -54,10 +89,10 @@
         <Ellipse Width="150" Height="150" Fill="LightCoral" Opacity="0.6" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,100,0,0"/>
         <Rectangle Width="200" Height="100" Fill="LightSkyBlue" Opacity="0.5" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,50,50"/>
 
-        <!-- Кнопка с новым стилем -->
+        <!-- Кнопка с новым стилем и командами -->
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Button Style="{StaticResource StyledButton}" Content="Add Note" Margin="10"/>
-            <Button Style="{StaticResource StyledButton}" Content="Settings" Margin="10"/>
+            <Button Style="{StaticResource StyledButton}" Command="ApplicationCommands.New" Content="Add Note" Margin="10"/>
+            <Button Style="{StaticResource StyledButton}" Command="ApplicationCommands.Open" Content="Settings" Margin="10"/>
         </StackPanel>
     </Grid>
 </Window>
